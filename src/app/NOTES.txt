@@ -1,0 +1,21 @@
+FAVICON
+
+Configurar um Favicon é tão simples como enviar uma imagem .png ou .ico para a pasta app com o nome icon, 
+icon.png ou icon.ico
+o Next encarrega-se de fazer o resto 
+
+//LAYOUT
+Uma estratégia interessante no caso que queramos usar layouts é deixar o nosso layout geral em branco e comrçar a criar a nossa app a partir de uma pasta usando [].
+Assim como usamos o () a "Pasta é ignorada relativamento a roteamento, e lá poderemos começar a nossa app, layouts etc.
+Teremos também de deslocar o nosso ficheiro page.tsx para a mesma pasta
+
+
+SCALLATOR TECHNIC
+Consiste em deixar uma pag semelhante enquanto a nossa pagina carrega.
+Assim criamos um 
+(home) e lá teremos o nosso 
+-- page.tsx 
+-- loading.tsx
+
+<Image />
+A tag Image do Next, obriga-me a definir tamanhos, tamanhos esses que serão processados pelo servidor e apenas será enviada a imagem já processadas com esse tamanho.
