@@ -1,12 +1,12 @@
 
 export interface Product {
     id: number;
-    tittle: string;
+    title: string;
     slug: string;
     price: number;
     image: string;
     description: string,
-    feactured: boolean
+    feacture: boolean
 }
 
 export interface GetParams {

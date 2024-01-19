@@ -1,9 +1,7 @@
-import data from "./data.json"
+import data from "../feactured/data.json"
 
 
 export async function GET() {
-    const featuredProducts = data.products.filter(product => product.feacture)
-    console.log(featuredProducts)
+    const featuredProducts = data.products.filter(product => product.feactured)
     return Response.json(featuredProducts)
-
 }

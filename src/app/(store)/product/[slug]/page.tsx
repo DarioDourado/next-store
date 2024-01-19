@@ -1,38 +1,81 @@
 import { api } from "@/app/api/data/api";
+import AddToCartButton from "@/components/add-to-cart-componet";
 import { Product, ProductProps } from "@/types/types";
 import Image from "next/image";
 
+// // Metadata
+// export const metadata: Metadata = {
+//   title: {
+//     template: '% | My Store',
+//     default: 'My Store'
+//   }
+// }
 
 async function getProduct(slug: string): Promise<Product> {
 
-    const response = await api(`/products/${slug}`, {
-        next: {
-            revalidate: 60 * 60 // 1h
-        }
-    })
-    const product = await response.json()
+    // const response = await api(`/products/${slug}`, 
+    // {
+    //     next: {
+    //         revalidate: 60 * 60 // 1h
+    //     }
+    // }
 
+
+    const response = await api(`/products/${slug}`)
+    const product = await response.json()
     return product
 }
 
 
+// Metadata dinâmica
+export async function generateMetadata( { params }: ProductProps) {
+
+    const product = await getProduct(params.slug) // 1ª Chamada.
+
+    console.log(product.title)
+    return {
+        title: product.title
+    }
+}
+
+
+// Static Side Generation - Apesar de nos gerar paginas / dados estáticos em cache a melhor tática passa por deixar apenas o "Top products em cache" exp. para podermos gerir bem a nossa cache que é limitada á maquina.
+// export async function generateStaticParams() {
+//     // return [
+//     //     {
+//     //         slug: 'Camisola Roxa'
+
+//     //     }
+//     // ]
+
+//     const response = await api('/products/featured')
+//     const products: Product[] = await response.json()
+
+//     return products.map((product) => ({
+//         slug: product.slug
+//     }))
+// // Rever porque dá erro no map
+// }
+
 export default async function ProductPage({ params }: ProductProps) {
 
     const product = await getProduct(params.slug)
+    // NOTA: Este pedido produto já foi feito acima nos metadatas, como tal o Next vai reaproveitar este pedido e não vai fazer mais nenhum, assim mantemos a nossa performace. Conceito MEMORIZING
 
+    
     return (
         <main className="relative grid max-h-[860px] grid-cols-3">
             <div className="col-span-2 overflow-hidden">
                 <Image
                     src={product.image}
-                    alt={product.tittle}
-                    width={1000}
-                    height={1000}
+                    alt={product.title}
+                    width={860}
+                    height={860}
                     quality={100}
                 />
             </div>
             <div className="flex flex-col justify-center px-12">
-                <h1 className="text-3xl font-bold leading-tight">{product.tittle}</h1>
+                <h1 className="text-3xl font-bold leading-tight">{product.title}</h1>
                 <p className="mt-2 leading-relaxed text-zinc-400 text-sm" >{product.description}
                 </p>
                 <div className="mt-8 flex items-center gap-3">
@@ -66,9 +109,9 @@ export default async function ProductPage({ params }: ProductProps) {
                             <button type="button" className="flex h-9 w-14 items-center justify-center rounded-full border border-zinc-700 bg-zinc-800 text-sm font-semibold">XXL</button>
                         </span>
                     </div>
-                    <button type="button" className="mt-8 flex h-12 items-center justify-center rounded-full bg-emerald-600 font-semibold text-white p-4">
-                        Adicionar ao Carrinho
-                    </button>
+                    <AddToCartButton
+                        productId={product.id}
+                    />
                 </div>
             </div>
 

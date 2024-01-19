@@ -4,6 +4,17 @@ import { Product } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 
+// Metadata template 1ª Opção, usando prefixo dinâmico conforme a restante metadata das outras páginas
+
+// export const metadata: Metadata = {
+//   title: {
+//     template: '% | My Store',
+//     default: 'My Store'
+//   }
+// }
+
+// Em produtos teremos Metadata dinâmicamente gerada
+
 
 async function getFeactureProducts (): Promise<Product[]> {
   const response = await api('/products/feactured', {
@@ -27,27 +38,31 @@ export default async function Home() {
       <Link href={`/product/${highLightedProducts.slug}`} className="col-span-6 row-span-6 rounded-lg bg-zinc-900 overflow-hidden flex justify-center items-end">
         <Image
         className="group-hover:scale-105 transition-transform duration-500"
-        alt={highLightedProducts.tittle}
+        alt={highLightedProducts.title}
         src={highLightedProducts.image}
         width={920}
         height={920}
         quality={100}
         />
         <PriceTag 
-        
+          productN={highLightedProducts.title}
+          productP={highLightedProducts.price}
         />
       </Link>
       {otherProducts.map(product => (
-        <Link key={product.id} href={`/product/${product.slug}`} className="col-span-3 row-span-3 rounded-lg bg-zinc-900 overflow-hidden flex justify-center items-end">
+        <Link href={`/product/${product.slug}`} className="col-span-3 row-span-3 rounded-lg bg-zinc-900 overflow-hidden flex justify-center items-end">
         <Image
           className="group-hover:scale-105 transition-transform duration-500"
-          alt={product.tittle}
+          alt={product.title}
           src={product.image}
           width={920}
           height={920}
           quality={100}
           />
-          <PriceTag />
+          <PriceTag
+            productN={product.title}
+            productP={product.price}
+          />
       </Link>
       ))}
 </main>
