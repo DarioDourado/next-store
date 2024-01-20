@@ -32,7 +32,6 @@ export async function generateMetadata( { params }: ProductProps) {
 
     const product = await getProduct(params.slug) // 1ª Chamada.
 
-    console.log(product.title)
     return {
         title: product.title
     }

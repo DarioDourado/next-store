@@ -1,25 +1,18 @@
 
-import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { CartWidget } from "./cart-widget";
+import { SearchForm } from "./search-form";
 
 export function Header() {
 
     return (
     <header className="flex items-center justify-between">
         <div className="flex items-center gap-5">
-            <Link href={"/"} className="text-2xl font-extrabol text-white">mystore</Link>
-            <form className="felx w-[320px] items-center gar-3 rounded-full bg-zinc-900 px-5 py-3 ring-zinc-700"
-            action="">
-                <Search className="w-5 h-5 text-zinc-500" />
-                <input 
-                type="text"
-                placeholder="Pesquisar produtos..."
-                className="flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-500"
-                />
-            </form>
-
+            <Link href={"/"} className="text-2xl font-extrabol text-white">
+                mystore
+            </Link>
+            <SearchForm />
             <CartWidget />
             <Link href="/" className="flex items-center gap-2 hover:underline">
                 <span className="text-sm">Conta</span>
