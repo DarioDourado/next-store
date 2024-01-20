@@ -8,7 +8,7 @@
  * 5 - Exportar a função que pretendemos
  */
 
-import { ReactNode, createContext, useContext, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 interface CartItems {
     productId: number;
@@ -26,9 +26,27 @@ interface CartProviderProps {
 
 const CartContext = createContext({} as CartContextType)
 
+const storageKey = '@mystore-1.0.0:cart'
+
 export function CartProvider( { children }: CartProviderProps) {
 
-    const [cartItems, setCartItems] = useState<CartItems[]>([])
+    const [cartItems, setCartItems] = useState<CartItems[]>( () => {
+        const persistedCart = localStorage.getItem(storageKey)
+
+        if(persistedCart) {
+            return JSON.parse(persistedCart)
+        }
+
+        return []
+    })
+
+
+
+    // Podemos usar um useEffect() para deixar o nosso localstorage activo e caso o cliente tenha deixado compras no carrinho qd carrgarmos a pag, esses artigos vão ser carregados
+
+    useEffect(() => {
+        localStorage.setItem(storageKey, JSON.stringify(cartItems))
+    }, [cartItems])
 
     function addToCart(productId: number) {
         setCartItems((state) => {
